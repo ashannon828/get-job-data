@@ -14,7 +14,7 @@ function getMarkdown(jobs) {
 	let i = 0
 	const mdJobs = []
 	function next() {
-		if (i < jobs.length) {
+		if (i < 20) {
 			let mdOptions = {
 				url: jobs[i].url,
 				json: true,
@@ -22,10 +22,20 @@ function getMarkdown(jobs) {
 			}
 			rp(mdOptions).then(($) => {
 				const markdown = $('.markdown')
-				jobs[i].markdownDesc = markdown.text()
-				jobs[i].location =
-					locations[Math.floor(Math.random(locations.length) * 3)]
-				mdJobs.push(jobs[i])
+				let job = {
+					application_url: jobs[i].url,
+					company: jobs[i].company,
+					company_logo: jobs[i].company_logo,
+					date: jobs[i].date,
+					epoch: jobs[i].epoch,
+					location: locations[Math.floor(Math.random(locations.length) * 3)],
+					markdown_desc: markdown.text().replace(/\\n/g, '\n'),
+					position: jobs[i].position,
+					remoteok_id: jobs[i].id,
+					slug: jobs[i].slug,
+					tags: jobs[i].tags
+				}
+				mdJobs.push(job)
 				++i
 				console.log(i)
 				return next()
